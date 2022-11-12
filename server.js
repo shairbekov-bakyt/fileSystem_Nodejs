@@ -1,12 +1,30 @@
-const dotenv = require("dotenv");
 const path = require("path");
-const basePath = path.resolve(__dirname);
+const prefixTest = "test_";
+const fs = require("fs");
 
-dotenv.config();
+const writeFileAsync = async (fileName, data) => {
+  return new Promise((resolve, reject) =>
+    fs.writeFile(path.resolve(`${prefixTest}${fileName}`), data, (err) => {
+      if (err) {
+        return reject(err.message);
+      }
+      return resolve();
+    })
+  );
+};
 
-const baseUrl =
-  "http://localhost:8000/users/?id=53&username=Bakyt&password=admin123445";
+const appendFileAsync = async (fileName, data) => {
+  return new Promise((resolve, reject) =>
+    fs.appendFile(path.resolve(`${prefixTest}${fileName}`), data, (err) => {
+      if (err) {
+        return reject(err.message);
+      }
+      return resolve();
+    })
+  );
+};
 
-const urlData = new URL(baseUrl);
-
-console.log(urlData);
+writeFileAsync("test.txt", "five5.joke")
+  .then(() => appendFileAsync("test.txt", "appended"))
+  .then(() => appendFileAsync("test.txt", "apppended"))
+  .catch((err) => console.log(err));
