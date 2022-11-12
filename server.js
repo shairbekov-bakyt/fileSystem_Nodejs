@@ -39,9 +39,21 @@ const readFileAsync = async (fileName) => {
   );
 };
 
+const removeFileAsync = async (fileName) => {
+  return new Promise((resolve, reject) =>
+    fs.rm(path.resolve(`${prefixTest}${fileName}`), (err) => {
+      if (err) {
+        return reject(err.message);
+      }
+      resolve();
+    })
+  );
+};
+
 writeFileAsync("test.txt", "five5.joke")
   .then(() => appendFileAsync("test.txt", "appended"))
   .then(() => appendFileAsync("test.txt", "apppended"))
   .then(() => readFileAsync("test.txt"))
   .then((data) => console.log(data))
+  .then(() => removeFileAsync("test.txt"))
   .catch((err) => console.log(err));
