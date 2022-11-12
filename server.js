@@ -1,6 +1,8 @@
+const dotenv = require("dotenv");
 const path = require("path");
 const prefixTest = "test_";
 const fs = require("fs");
+dotenv.config();
 
 const writeFileAsync = async (fileName, data) => {
   return new Promise((resolve, reject) =>
@@ -50,10 +52,19 @@ const removeFileAsync = async (fileName) => {
   );
 };
 
-writeFileAsync("test.txt", "five5.joke")
-  .then(() => appendFileAsync("test.txt", "appended"))
-  .then(() => appendFileAsync("test.txt", "apppended"))
-  .then(() => readFileAsync("test.txt"))
-  .then((data) => console.log(data))
-  .then(() => removeFileAsync("test.txt"))
+//writeFileAsync("test.txt", "five5.joke")
+//  .then(() => appendFileAsync("test.txt", "appended"))
+//  .then(() => appendFileAsync("test.txt", "apppended"))
+//  .then(() => readFileAsync("test.txt"))
+//  .then((data) => console.log(data))
+//  .then(() => removeFileAsync("test.txt"))
+//  .catch((err) => console.log(err));
+
+const text = process.env.TEXT || "";
+
+writeFileAsync("text.txt", text)
+  .then(() => readFileAsync("text.txt"))
+  .then((data) => data.split(" ").length)
+  .then((count) => writeFileAsync("count.txt", `count of words ${count}`))
+  .then(() => removeFileAsync("text.txt"))
   .catch((err) => console.log(err));
